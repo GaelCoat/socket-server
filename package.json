@@ -4,6 +4,9 @@
   "description": "Basic socket server",
   "main": "index.js",
   "author": "Gael Coat",
+  "scripts": {
+    "start": "node index.js"
+  },
   "private": false,
   "license": "MIT",
   "dependencies": {
