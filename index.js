@@ -1,29 +1,18 @@
 // Setup basic express server
 var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var app = express.createServer();
+var socket = require("socket.io");
 var port = process.env.PORT || 3000;
+var io = socket.listen(app);
+app.listen(port);
 
-server.listen(port, function () {
-  console.log('Server listening at port %d', port);
+io.configure(function() {
+  io.set("transports", ["xhr-polling"])
+  io.set("polling duration", 10)
 });
 
-// Routing
-//app.use(express.static(__dirname + '/public'));
+io.sockets.on('connection', function(socket) {
 
-app.get('/', function (req, res) {
-  res.send('Hello World!');
+  console.log('Connected');
 });
 
-// Chatroom
-
-io.configure(function () {
-  io.set("transports", ["xhr-polling"]);
-  io.set("polling duration", 10);
-});
-
-
-io.on('connection', function (socket) {
-
-});
