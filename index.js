@@ -12,6 +12,8 @@ server.listen(port, function () {
 // Routing
 //app.use(express.static(__dirname + '/public'));
 
+app.set('view engine', 'jade');
+
 app.get('/', function (req, res) {
   res.render('<h1>Hello World!</h1>');
 });
