@@ -1,0 +1,215 @@
+/* Fix user-agent */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  background-color: #666;
+}
+
+html, input {
+  font-family:
+    "HelveticaNeue-Light",
+    "Helvetica Neue Light",
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    "Lucida Grande",
+    sans-serif;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+  word-wrap: break-word;
+}
+
+.custom-cursor #canvas{
+  cursor: none;
+}
+
+#canvas {
+  position: relative;
+  margin: 30px;
+  margin-top: 0px;
+  display: block;
+}
+
+#cursor{
+  position: fixed;
+  background-color: rgba(0,0,0,.1);
+  border: 1px solid rgba(0,0,0,.4);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.4);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  pointer-events: none;
+  display: none;
+}
+
+.custom-cursor #cursor{
+  display: block;
+}
+
+header{
+  margin: 30px;
+  margin-bottom: 12px;
+  font-size: 0;
+  background-color: #efefef;
+  padding: 6px;
+  padding-right: 2px;
+  border-radius: 3px;
+  width: auto;
+  display: inline-block;
+  position: relative;
+  z-index: 99;
+}
+
+header > .dropdown{
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  position: relative;
+  margin-right: 4px;
+}
+
+header > .dropdown .choices{
+  position: absolute;
+  top: 100%;
+  margin-top: 3px;
+  border-radius: 3px;
+  background-color: white;
+  padding: 3px;
+  display: none;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  box-shadow: 0 2px 45px 0 rgba(0, 0, 0, 0.16);
+}
+
+header > .dropdown.open .choices{
+  display: block;
+}
+
+header > .dropdown .choices li{
+  width: 29px;
+  height: 29px;
+  display: block;
+  position: relative;
+}
+
+header > .dropdown .choices li:hover{
+  border-radius: 3px;
+  background-color: rgba(0,0,0,.12);
+}
+
+header > .dropdown .choices li i{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%,-50%,0);
+  border-radius: 50%;
+}
+
+header > .dropdown.size .choices li i{
+  background-color: #111111;
+}
+
+header > .dropdown .preview{
+  display: block;
+  width: 35px;
+  height: 35px;
+  background-color: rgba(0,0,0,.03);
+  border-radius: 3px;
+  position: relative;
+}
+
+header > .dropdown.open .preview,
+header > .dropdown .preview:hover{
+  background-color: rgba(0,0,0,.08);
+}
+
+header > .dropdown.activ .preview{
+  background-color: #a5d5f7;
+}
+
+header > .dropdown .preview > i{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%,-50%,0);
+}
+
+header > .dropdown.size .preview > i{
+  border-radius: 50%;
+  background-color: #313131;
+}
+
+header > .dropdown .choices li[data-size='5'] i,
+header > .dropdown .preview[data-size='5'] i{
+  width: 5px;
+  height: 5px;
+}
+
+header > .dropdown .choices li[data-size='10'] i,
+header > .dropdown .preview[data-size='10'] i{
+  width: 10px;
+  height: 10px;
+}
+
+header > .dropdown .preview[data-size='15'] i,
+header > .dropdown .choices li[data-size='15'] i{
+  width: 15px;
+  height: 15px;
+}
+
+header > .dropdown .choices li[data-size='20'] i,
+header > .dropdown .preview[data-size='20'] i{
+  width: 20px;
+  height: 20px;
+}
+
+header > .dropdown .preview[data-size='25'] i,
+header > .dropdown .choices li[data-size='25'] i{
+  width: 25px;
+  height: 25px;
+}
+
+
+*[data-color='#001F3F'] > i { background-color: #001F3F; }
+*[data-color='#0074D9'] > i { background-color: #0074D9; }
+*[data-color='#7FDBFF'] > i { background-color: #7FDBFF; }
+*[data-color='#39CCCC'] > i { background-color: #39CCCC; }
+*[data-color='#3D9970'] > i { background-color: #3D9970; }
+*[data-color='#2ECC40'] > i { background-color: #2ECC40; }
+*[data-color='#01FF70'] > i { background-color: #01FF70; }
+*[data-color='#FFDC00'] > i { background-color: #FFDC00; }
+*[data-color='#FF851B'] > i { background-color: #FF851B; }
+*[data-color='#FF4136'] > i { background-color: #FF4136; }
+*[data-color='#F012BE'] > i { background-color: #F012BE; }
+*[data-color='#B10DC9'] > i { background-color: #B10DC9; }
+*[data-color='#85144B'] > i { background-color: #85144B; }
+*[data-color='#AAAAAA'] > i { background-color: #AAAAAA; }
+*[data-color='#DDDDDD'] > i { background-color: #DDDDDD; }
+*[data-color='#111111'] > i { background-color: #111111; }
+
+header > .dropdown.color i{
+  width: 18px;
+  height: 18px;
+  border-radius: 3px !important;
+}
+
+header > .dropdown.color .choices{
+  width: 240px;
+}
+
+header > .dropdown.color .choices li{
+  display: inline-block;
+  vertical-align: top;
+}

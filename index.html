@@ -1,14 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Socket.IO Chat Example</title>
+  <link rel="stylesheet" href="assets/styles/main.css">
+</head>
+<body>
+  <header id='toolbar'>
 
-<html>
-  <body>
-    <p id='server-time'></p>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-      var socket = io();
-      var el = document.getElementById('server-time');
-      socket.on('time', function(timeString) {
-        el.innerHTML = 'Server time: ' + timeString;
-      });
-    </script>
-  </body>
+    <div data-mode='false' class='dropdown set-mode activ'>
+      <div class='preview'><i><img src='assets/imgs/brush.png' /></i></div>
+    </div>
+
+    <div data-mode='white' class='dropdown set-mode'>
+      <div class='preview'><i><img src='assets/imgs/eraser.png' width='20'/></i></div>
+    </div>
+
+    <div class='dropdown color'>
+      <div data-color='#111111' class='preview'><i></i></div>
+      <ul class='choices'>
+        <li data-color='#001F3F' class='close'><i></i></li>
+        <li data-color='#0074D9' class='close'><i></i></li>
+        <li data-color='#7FDBFF' class='close'><i></i></li>
+        <li data-color='#39CCCC' class='close'><i></i></li>
+        <li data-color='#3D9970' class='close'><i></i></li>
+        <li data-color='#2ECC40' class='close'><i></i></li>
+        <li data-color='#01FF70' class='close'><i></i></li>
+        <li data-color='#FFDC00' class='close'><i></i></li>
+        <li data-color='#FF851B' class='close'><i></i></li>
+        <li data-color='#FF4136' class='close'><i></i></li>
+        <li data-color='#F012BE' class='close'><i></i></li>
+        <li data-color='#B10DC9' class='close'><i></i></li>
+        <li data-color='#85144B' class='close'><i></i></li>
+        <li data-color='#AAAAAA' class='close'><i></i></li>
+        <li data-color='#DDDDDD' class='close'><i></i></li>
+        <li data-color='#111111' class='close'><i></i></li>
+      </ul>
+    </div>
+
+    <div class='dropdown size'>
+      <div data-size='5' class='preview'><i></i></div>
+      <ul class='choices'>
+        <li data-size='5' class='close'><i></i></li>
+        <li data-size='10' class='close'><i></i></li>
+        <li data-size='15' class='close'><i></i></li>
+        <li data-size='20' class='close'><i></i></li>
+        <li data-size='25' class='close'><i></i></li>
+      </ul>
+    </div>
+
+  </header>
+
+  <canvas id='canvas' width='1500' height='800'></canvas>
+  <div id='cursor'></div>
+
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="assets/libs/underscore.js"></script>
+  <script src="assets/libs/main.js"></script>
+</body>
 </html>
