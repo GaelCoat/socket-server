@@ -4,6 +4,7 @@
     <p id='server-time'></p>
     <script src="/socket.io/socket.io.js"></script>
     <script>
+      var backbone = require('backbone');
       var socket = io();
       var el = document.getElementById('server-time');
       socket.on('time', function(timeString) {
