@@ -18,7 +18,11 @@ app.get('/', function (req, res) {
 
 // Chatroom
 
-var numUsers = 0;
+io.configure(function () {
+  io.set("transports", ["xhr-polling"]);
+  io.set("polling duration", 10);
+});
+
 
 io.on('connection', function (socket) {
 
