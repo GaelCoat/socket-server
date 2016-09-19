@@ -36,15 +36,21 @@ ul {
   cursor: none;
 }
 
-#canvas {
+.wrap{
   position: relative;
   margin: 30px;
+  width: 1500px;
   margin-top: 0px;
+  overflow: hidden;
+}
+
+#canvas {
+  position: relative;
   display: block;
 }
 
 #cursor{
-  position: fixed;
+  position: absolute;
   background-color: rgba(0,0,0,.1);
   border: 1px solid rgba(0,0,0,.4);
   box-shadow: 0 0 0 1px rgba(255,255,255,.4);

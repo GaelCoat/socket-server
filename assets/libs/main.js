@@ -18,6 +18,8 @@ $(function() {
     color: '#111111',
     erasing: false,
 
+    drawers: {},
+
     initialize: function() {
 
       this.$el = $('#canvas');
@@ -25,8 +27,11 @@ $(function() {
       this.context.fillStyle = "white";
       this.context.fillRect(0, 0, this.$el.get(0).width, this.$el.get(0).height);
 
-      this.offsetLeft = this.$el.get(0).offsetLeft;
-      this.offsetTop = this.$el.get(0).offsetTop;
+      this.offsetLeft = this.$el.parent().get(0).offsetLeft;
+      this.offsetTop = this.$el.parent().get(0).offsetTop;
+
+      this.drawers['drawers'] = {};
+      this.drawers['length'] = 0;
 
       return this.initEvents();
     },
@@ -40,7 +45,7 @@ $(function() {
         that.oldX = e.pageX - that.offsetLeft;
         that.oldY = e.pageY - that.offsetTop;
         that.paint = true;
-        return that.draw(e, false);
+        return that.draw(e);
       });
 
       this.$el.mouseenter(function() { $('body').addClass('custom-cursor'); });
@@ -50,7 +55,7 @@ $(function() {
 
         that.handleCursor(e);
         if (!that.paint) return true;
-        return that.draw(e, false, true);
+        return that.draw(e, true);
       });
 
       this.$el.mouseup(function() {
@@ -62,22 +67,22 @@ $(function() {
       return this;
     },
 
-    draw: function(e, dist, drag) {
+    draw: function(e, drag) {
 
-      var currentX = dist.currentX || e.pageX - this.offsetLeft;
-      var currentY = dist.currentY || e.pageY - this.offsetTop;
+      var currentX = e.pageX - this.offsetLeft;
+      var currentY = e.pageY - this.offsetTop;
 
       if (currentX === this.oldX && !drag) currentX += 1;
       if (currentY === this.oldY && !drag) currentY += 1;
 
-      if (!dist) this.emitDraw(currentX, currentY);
+      this.emitDraw(currentX, currentY);
 
-      this.context.strokeStyle =  dist.color || this.erasing || this.color;
+      this.context.strokeStyle =  this.erasing || this.color;
 
       this.context.lineJoin = "round";
-      this.context.lineWidth = dist.size || this.size;
+      this.context.lineWidth = this.size;
       this.context.beginPath();
-      this.context.moveTo(dist.oldX || this.oldX, dist.oldY || this.oldY);
+      this.context.moveTo(this.oldX, this.oldY);
       this.context.lineTo(currentX, currentY);
       this.context.closePath();
       this.context.stroke();
@@ -104,12 +109,19 @@ $(function() {
     handleCursor: function(e) {
 
       $('#cursor').css({
-        left: e.pageX - this.size / 2,
-        top: e.pageY - this.size / 2,
+        left: e.pageX - this.offsetLeft - this.size / 2,
+        top: e.pageY - this.offsetTop - this.size / 2,
         width: this.size,
         height: this.size,
       });
 
+    },
+
+    fetchDrawers: function(list) {
+
+      console.log(list);
+      list.forEach(this.addDrawer.bind(this));
+      return this;
     },
 
     fetchContext: function(id) {
@@ -132,6 +144,23 @@ $(function() {
       img.src = src;
 
       return this;
+    },
+
+    socketDraw: function(res) {
+
+      return this.drawers.drawers[res.id].draw(res.data);
+    },
+
+    addDrawer: function(id) {
+
+      this.drawers.drawers[id] = new Drawer(id, this.context);
+      this.drawers.length = _.size(this.drawers.drawers);
+    },
+
+    removeDrawer: function(id) {
+
+      delete this.drawers.drawers[id];
+      this.drawers.length = _.size(this.drawers.drawers);
     },
 
   }
@@ -212,11 +241,14 @@ $(function() {
 
       this.socket = io();
 
-      this.socket.on('context:fetch', Drawing.fetchContext.bind(Drawing));
+      this.socket.on('fetch:drawers', Drawing.fetchDrawers.bind(Drawing));
+      this.socket.on('fetch:context', Drawing.fetchContext.bind(Drawing));
+      this.socket.on('new:drawer', Drawing.addDrawer.bind(Drawing));
+      this.socket.on('dc:drawer', Drawing.removeDrawer.bind(Drawing));
       this.socket.on('context:init', Drawing.initContext.bind(Drawing));
       this.socket.on('draw', function(data) {
 
-        return Drawing.draw(false, data);
+        return Drawing.socketDraw(data);
       });
       this.socket.on('connect', function() {
 
@@ -235,7 +267,27 @@ $(function() {
     },
   }
 
+  var Drawer = function (id, context) {
 
+    this.id = id;
+    this.context = context;
+
+    this.draw = function(data) {
+
+      console.log('hope ?');
+
+      this.context.strokeStyle =  data.color;
+      this.context.lineJoin = "round";
+      this.context.lineWidth = data.size;
+      this.context.beginPath();
+      this.context.moveTo(data.oldX, data.oldY);
+      this.context.lineTo(data.currentX, data.currentY);
+      this.context.closePath();
+      this.context.stroke();
+
+      return this;
+    }
+  }
 
   return Socket.initialize();
 });
