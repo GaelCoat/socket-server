@@ -12,6 +12,8 @@ const server = express()
   .use((req, res) => res.sendFile(INDEX) )
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
+server.use(express.static('assets'));
+
 const io = socketIO(server);
 
 io.on('connection', (socket) => {
