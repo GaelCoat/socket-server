@@ -1,22 +1,25 @@
 
-'use strict';
-
-var port = process.env.PORT || 3000;
+// Setup basic express server
 var express = require('express');
 var app = express();
-var io = require('socket.io').listen(app);
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+var port = process.env.PORT || 3000;
 
-app.listen(port, function () {
-  console.log('App listening on port ' + port);
+server.listen(port, function () {
+  console.log('Server listening at port %d', port);
 });
 
+app.set('view engine', 'pug')
+// Routing
+app.use(express.static(__dirname + '/assets'));
+
+// Chatroom
 app.get('/', function (req, res) {
-  res.render(__dirname, 'index.html');
+  res.render('index');
 });
 
-app.use(express.static('assets'));
-
-io.on('connection', function(socket) {
+io.on('connection', function (socket) {
   console.log('Client connected');
   socket.on('disconnect', () => console.log('Client disconnected'));
 });
